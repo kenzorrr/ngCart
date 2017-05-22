@@ -12,14 +12,14 @@ angular.module('ngCart', ['ngCart.directives'])
         };
     })
 
-    .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
+    .run(['$rootScope', 'ngCart','ngCartItem', 'cartstore', function ($rootScope, ngCart, ngCartItem, cartstore) {
 
         $rootScope.$on('ngCart:change', function(){
             ngCart.$save();
         });
 
-        if (angular.isObject(store.get('cart'))) {
-            ngCart.$restore(store.get('cart'));
+        if (angular.isObject(cartstore.get('cart'))) {
+            ngCart.$restore(cartstore.get('cart'));
 
         } else {
             ngCart.init();
@@ -27,7 +27,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', '$window', 'ngCartItem', 'store', function ($rootScope, $window, ngCartItem, store) {
+    .service('ngCart', ['$rootScope', '$window', 'ngCartItem', 'cartstore', function ($rootScope, $window, ngCartItem, cartstore) {
 
         this.init = function(){
             this.$cart = {
@@ -194,7 +194,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.$save = function () {
-            return store.set('cart', JSON.stringify(this.getCart()));
+            return cartstore.set('cart', JSON.stringify(this.getCart()));
         }
 
     }])
@@ -302,7 +302,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('store', ['$window', function ($window) {
+    .service('cartstore', ['$window', function ($window) {
 
         return {
 
