@@ -10,7 +10,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
-            controller : 'CartController',
+            controller: function(element, attrs) {
+                if ( typeof attrs.controller == 'undefined' ) {
+                    return 'template/ngCart/addtocart.html';
+                } else {
+                    return attrs.controller;
+                }
+            },
             scope: {
                 id:'@',
                 name:'@',
