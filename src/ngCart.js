@@ -330,7 +330,9 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.minusOne = function() {
-            $scope.q = $scope.q -1;
+            if($scope.q != 1){
+                $scope.q = $scope.q -1;
+            }
         };
         
         $scope.plusOne = function () {

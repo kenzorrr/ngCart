@@ -1,27 +1,18 @@
-<!--
-<div class="divAdd" ng-hide="attrs.id">
-    <md-button class="md-icon-button" ng-disabled="true">
-            <md-icon md-font-icon="icon-plus-circle" aria-label="AddToCart"></md-icon>
-    </md-button>
+<div ng-hide="attrs.id">
+    <a class="btn btn-lg btn-primary" ng-disabled="true" ng-transclude></a>
 
 </div>
--->
-<div class="divAddAmount" ng-show="attrs.id">
-    <div class="divAmount">
-        <md-button aria-label="minusButton" ng-click="minusOne()">
-        <md-icon md-font-icon="icon-minus-circle" aria-label="minusOne"></md-icon>
-        </md-button>
-            <input type="number" name="quantity" placeholder="0" id="quantity" ng-model="q">
-        <md-button aria-label="plusOneButton" ng-click="plusOne()">
-            <md-icon md-font-icon="icon-plus-circle" aria-label="plusOne"></md-icon>
-        </md-button>
+<div ng-show="attrs.id">
+    <div>
+        <span ng-show="quantityMax">
+            <select name="quantity" id="quantity" ng-model="q"
+                    ng-options=" v for v in qtyOpt"></select>
+        </span>
+        <a class="btn btn-sm btn-primary"
+           ng-click="ngCart.addItem(id, name, price, q, data)"
+           ng-transclude></a>
     </div>
-    <div class="divAdd" >
-        <md-button ng-click="ngCart.addItem(id, name, price, q, data)">
-        <div class="button-add">
-            <p aria-label="AddToCart" id="button-add-text">Voeg toe</p>
-        </div>
-        </md-button>
-    </div>
+    <mark  ng-show="inCart()">
+        This item is in your cart. <a ng-click="ngCart.removeItemById(id)" style="cursor: pointer;">Remove</a>
+    </mark>
 </div>
-     

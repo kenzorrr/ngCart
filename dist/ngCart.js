@@ -329,6 +329,16 @@ angular.module('ngCart', ['ngCart.directives'])
     }])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+        $scope.minusOne = function() {
+            if($scope.q != 1){
+                $scope.q = $scope.q -1;
+            }
+        };
+        
+        $scope.plusOne = function () {
+            $scope.q = $scope.q +1
+            
+        };
         $scope.ngCart = ngCart;
 
     }])
@@ -346,7 +356,13 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
         return {
             restrict : 'E',
-            controller : 'CartController',
+            controller: function(element, attrs) {
+                if ( typeof attrs.controller == 'undefined' ) {
+                    return 'template/ngCart/addtocart.html';
+                } else {
+                    return attrs.controller;
+                }
+            },
             scope: {
                 id:'@',
                 name:'@',
