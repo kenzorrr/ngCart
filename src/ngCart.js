@@ -38,7 +38,7 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
         
-        this.addItem = function (id, name, shop, price, quantity, data) {
+        this.addItem = function (id, name, shop, shopkey, price, quantity, data) {
 
             var inCart = this.getItemById(id);
 
@@ -47,7 +47,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, shop, price, quantity, data);
+                var newItem = new ngCartItem(id, name, shop, shopkey, price, quantity, data);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -188,7 +188,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._shop, item._price, item._quantity, item._data));
+                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._shop, item._shopkey, item._price, item._quantity, item._data));
             });
             this.$save();
         };
@@ -201,10 +201,11 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, shop, price, quantity, data) {
+        var item = function (id, name, shop, shopkey, price, quantity, data) {
             this.setId(id);
             this.setName(name);
             this.setShop(shop);
+            this.setShopkey(shopkey);
             this.setPrice(price);
             this.setQuantity(quantity);
             this.setData(data);
@@ -243,6 +244,15 @@ angular.module('ngCart', ['ngCart.directives'])
             return this._shop;
         };
 
+        item.prototype.setShopkey = function(shopkey){
+            if (shopkey)  this._shopkey = shopkey;
+            else {
+                $log.error('A shopkey must be provided');
+            }
+        };
+        item.prototype.getShopkey = function(){
+            return this._shopkey;
+        };
 
         item.prototype.setPrice = function(price){
             var priceFloat = parseFloat(price);
@@ -304,6 +314,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 id: this.getId(),
                 name: this.getName(),
                 shop: this.getShop(),
+                shopkey: this.getShopkey(),
                 price: this.getPrice(),
                 quantity: this.getQuantity(),
                 data: this.getData(),

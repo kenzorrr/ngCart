@@ -15,6 +15,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 id:'@',
                 name:'@',
                 shop:'@',
+                shopkey: '@',
                 quantity:'@',
                 quantityMax:'@',
                 price:'@',
