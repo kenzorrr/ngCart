@@ -38,7 +38,7 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
         
-        this.addItem = function (id, name, shop, shopkey, price, quantity, data) {
+        this.addItem = function (id, name, img, description, shop, shopkey, price, quantity, data) {
 
             var inCart = this.getItemById(id);
 
@@ -47,7 +47,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, shop, shopkey, price, quantity, data);
+                var newItem = new ngCartItem(id, name, img, description, shop, shopkey, price, quantity, data);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -188,7 +188,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._shop, item._shopkey, item._price, item._quantity, item._data));
+                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._img, item._description, item._shop, item._shopkey, item._price, item._quantity, item._data));
             });
             this.$save();
         };
@@ -201,9 +201,11 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, shop, shopkey, price, quantity, data) {
+        var item = function (id, name, img, description, shop, shopkey, price, quantity, data) {
             this.setId(id);
             this.setName(name);
+            this.setImg(img);
+            this.setDescription(description);
             this.setShop(shop);
             this.setShopkey(shopkey);
             this.setPrice(price);
@@ -232,6 +234,26 @@ angular.module('ngCart', ['ngCart.directives'])
         };
         item.prototype.getName = function(){
             return this._name;
+        };
+        
+        item.prototype.setImg = function(img){
+            if (img)  this._img = img;
+            else {
+                $log.error('A image must be provided');
+            }
+        };
+        item.prototype.getImg = function(){
+            return this._img;
+        };
+        
+        item.prototype.setDescription = function(description){
+            if (description)  this._description = description;
+            else {
+                $log.error('A description must be provided');
+            }
+        };
+        item.prototype.getDescription = function(){
+            return this._description;
         };
         
         item.prototype.setShop = function(shop){
@@ -313,6 +335,8 @@ angular.module('ngCart', ['ngCart.directives'])
             return {
                 id: this.getId(),
                 name: this.getName(),
+                img: this.getImg(),
+                description: this.getDescription(),
                 shop: this.getShop(),
                 shopkey: this.getShopkey(),
                 price: this.getPrice(),

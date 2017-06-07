@@ -14,6 +14,8 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             scope: {
                 id:'@',
                 name:'@',
+                img:'@',
+                description:'@',
                 shop:'@',
                 shopkey: '@',
                 quantity:'@',
