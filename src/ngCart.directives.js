@@ -20,8 +20,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 shopkey: '@',
                 quantity:'@',
                 quantityMax:'@',
-                price:'@',
-                data:'='
+                price:'@'
             },
             transclude: true,
             templateUrl: function(element, attrs) {
